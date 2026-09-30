@@ -1,0 +1,14 @@
+{
+  "id": "msg_fixture_01",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-sonnet-5-5",
+  "content": [
+    {
+      "type": "text",
+      "text": "```json\n{\"sentences\":[{\"n\":1,\"role\":\"evidence\",\"support\":null,\"register\":\"neutral\",\"quote\":\"fell 20%\",\"note\":\"A measured figure offered as support.\"},{\"n\":2,\"role\":\"claim\",\"support\":\"supported\",\"register\":\"formal\",\"quote\":\"we must act now\",\"note\":\"Draws a conclusion from sentence 1.\"},{\"n\":3,\"role\":\"claim\",\"support\":\"unsupported\",\"register\":\"informal\",\"quote\":\"Cats are better\",\"note\":\"An implicit claim with no evidence.\"},{\"n\":9,\"role\":\"claim\",\"support\":null,\"register\":\"neutral\",\"quote\":\"\",\"note\":\"Out of range.\"}]}\n```"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "usage": { "input_tokens": 312, "output_tokens": 164 }
+}

@@ -1,0 +1,174 @@
+/*
+ * styles.css — Prose Lens.
+ * Colours are CSS variables, redefined for dark mode, so lanes and marks
+ * stay readable in both themes.
+ */
+
+:root {
+  --bg: #fbfaf7;
+  --panel: #ffffff;
+  --text: #1f1d1a;
+  --muted: #6b665e;
+  --rule: #e4e0d8;
+  --focus: #2f6fdb;
+  --error: #b3261e;
+  /* One colour per built-in lane, by lane id. */
+  --lane-syntax: #2f6fdb;
+  --lane-diction: #d9731a;
+  --lane-prosody: #2e9e6b;
+  --lane-argument: #8a4fd1;
+  --lane-llm: #c2417f;
+  --lane-references: #13928f;
+  /* Fallbacks, by position, for lanes added later without their own colour. */
+  --lane-1: #2f6fdb;
+  --lane-2: #d9731a;
+  --lane-3: #2e9e6b;
+  --lane-4: #8a4fd1;
+  --lane-5: #13928f;
+  --lane-6: #c2417f;
+  --mark: #ffe58a;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161513;
+    --panel: #1f1e1b;
+    --text: #ece8e1;
+    --muted: #a39d93;
+    --rule: #34322e;
+    --mark: #6b5a12;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  padding: 16px 24px 8px;
+  border-bottom: 1px solid var(--rule);
+}
+.topbar h1 { margin: 0; font-size: 20px; }
+.topbar p { margin: 4px 0 8px; color: var(--muted); font-size: 14px; }
+
+/* Two columns: editor | lanes + detail. Stacks on narrow screens. */
+#app {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 24px;
+  height: calc(100vh - 80px);
+}
+@media (max-width: 820px) {
+  #app { grid-template-columns: 1fr; height: auto; padding: 16px; }
+  .editor { min-height: 40vh; }
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+  resize: none;
+  padding: 16px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  font: 16px/1.6 Georgia, "Times New Roman", serif;
+}
+.editor:focus { outline: 2px solid var(--focus); outline-offset: -1px; }
+.editor::selection { background: color-mix(in srgb, var(--focus) 30%, transparent); }
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: auto;
+}
+
+/* ---- Lanes ---- */
+.lanes { display: flex; flex-direction: column; gap: 12px; }
+
+.lane {
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--lane-colour);
+  border-radius: 8px;
+  background: var(--panel);
+}
+.lane.hidden { opacity: 0.6; }
+
+.lane-header { display: flex; align-items: baseline; gap: 8px; cursor: pointer; }
+.lane-header input { accent-color: var(--lane-colour); }
+.lane-name { font-weight: 600; }
+.lane-desc { color: var(--muted); font-size: 13px; }
+
+.strip { display: block; width: 100%; height: 28px; margin-top: 8px; }
+.strip .cell {
+  fill: var(--lane-colour);
+  stroke: var(--panel);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  cursor: pointer;
+}
+.strip .cell:hover { stroke: var(--muted); }
+.strip .cell.selected { stroke: var(--text); stroke-width: 2.5; }
+.strip .marker { fill: var(--text); opacity: 0.55; }
+
+.lane-error { margin: 8px 0 0; color: var(--error); font-size: 14px; }
+
+/* ---- Detail ---- */
+.detail {
+  padding: 12px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--panel);
+}
+.detail:empty { display: none; }
+.detail h2 { margin: 0 0 8px; font-size: 14px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.detail-hint { margin: 0; color: var(--muted); font-size: 14px; }
+.detail-sentence { margin: 0 0 12px; font: 17px/1.6 Georgia, serif; }
+.detail-sentence mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+.detail-readings { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; font-size: 14px; }
+.detail-readings dt { font-weight: 600; }
+.detail-readings dd { margin: 0; }
+.detail-readings ul { margin: 0; padding-left: 18px; }
+.detail-readings li { margin: 2px 0; }
+
+/* ---- Claude panel ---- */
+.llm-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  align-items: end;
+  padding: 12px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--lane-llm);
+  border-radius: 8px;
+  background: var(--panel);
+}
+.llm-label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 600; }
+.llm-key {
+  padding: 6px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px ui-monospace, monospace;
+}
+.llm-run {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--lane-llm);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.llm-run:disabled { opacity: 0.55; cursor: progress; }
+.llm-status { grid-column: 1 / -1; margin: 0; color: var(--muted); font-size: 13px; }
