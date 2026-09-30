@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "See many aspects of a piece of writing at once: syntax, diction, prosody, argument and references, lined up as lanes against the text.",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

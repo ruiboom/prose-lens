@@ -229,3 +229,7 @@ src/analysers/             types, registry, lexicon, syntax, diction,
 src/llm/                   prompt, parse, client, panel (the Claude lane's plumbing)
 tests/                     Vitest suites, analyser contract, fixtures
 ```
+
+## License
+
+[MIT](LICENSE) © 2026 ruiboom
